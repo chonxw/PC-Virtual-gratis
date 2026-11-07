@@ -1,0 +1,65 @@
+
+name: PC Virtual Gamer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+jobs:
+  pc-virtual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Baixar arquivos do projeto
+        uses: actions/checkout@v4
+
+      - name: Atualizar sistema
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+
+      - name: Instalar ambiente gráfico
+        run: |
+          sudo apt install -y \
+            xfce4 \
+            xfce4-goodies \
+            xorg \
+            dbus-x11 \
+            x11-xserver-utils \
+            mesa-utils
+
+      - name: Instalar ferramentas
+        run: |
+          sudo apt install -y \
+            git \
+            curl \
+            wget \
+            unzip \
+            htop \
+            neofetch
+
+      - name: Verificar aceleração gráfica
+        run: |
+          glxinfo -B || true
+          echo "Ambiente gráfico preparado!"
+
+      - name: Informações do PC Virtual
+        run: |
+          echo "=============================="
+          echo "       PC VIRTUAL GAMER"
+          echo "=============================="
+          echo "Sistema:"
+          uname -a
+          echo "Processador:"
+          lscpu
+          echo "Memória:"
+          free -h
+          echo "Armazenamento:"
+          df -h
+
+      - name: Finalizar
+        run: |
+          echo "PC Virtual Gamer configurado!"
+          echo "Consulte os logs para verificar o ambiente."
